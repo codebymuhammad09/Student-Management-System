@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Student Details - Student Management System{% endblock %}
+{% block page_title %}Student Details{% endblock %}
+{% block nav_students %}active{% endblock %}
+
+{% block content %}
+
+    {#
+        Flask: pass a single `student` object/dict to this template, e.g.
+        return render_template('student_details.html', student=student)
+        The `default()` values below are placeholders for standalone preview only.
+    #}
+
+    <section class="page-intro page-intro--row">
+        <div>
+            <h2>{{ student.name | default('Amelia Carter') }}</h2>
+            <p>Student ID: #{{ student.id | default(101) }}</p>
+        </div>
+        <div class="detail-actions">
+            <a href="{{ url_for('edit_student', student_id=student.id | default(101)) }}" class="btn btn-secondary">Edit</a>
+            <button type="button" class="btn btn-danger" id="deleteStudentBtn"
+                    data-delete-id="{{ student.id | default(101) }}"
+                    data-delete-name="{{ student.name | default('Amelia Carter') }}">
+                Delete
+            </button>
+        </div>
+    </section>
+
+    <section class="panel panel--details">
+        <div class="panel-header">
+            <h3>Student Information</h3>
+        </div>
+
+        <dl class="detail-list">
+            <div class="detail-row">
+                <dt>Student ID</dt>
+                <dd>{{ student.id | default(101) }}</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Full Name</dt>
+                <dd>{{ student.name | default('Amelia Carter') }}</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Email Address</dt>
+                <dd>{{ student.email | default('amelia.carter@example.com') }}</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Phone Number</dt>
+                <dd>{{ student.phone | default('555-0101') }}</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Gender</dt>
+                <dd>{{ student.gender | default('Female') }}</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Class</dt>
+                <dd>{{ student.class_name | default('Grade 5') }}</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Age</dt>
+                <dd>{{ student.age | default(11) }}</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Address</dt>
+                <dd>{{ student.address | default('12 Maple Street, Springfield') }}</dd>
+            </div>
+        </dl>
+    </section>
+
+    <a href="{{ url_for('students') }}" class="back-link">&larr; Back to All Students</a>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        initDeleteConfirm('deleteStudentBtn');
+    });
+</script>
+{% endblock %}

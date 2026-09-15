@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}All Students - Student Management System{% endblock %}
+
+{% block page_title %}All Students{% endblock %}
+
+{% block nav_students %}active{% endblock %}
+
+{% block content %}
+
+<section class="page-intro page-intro--row">
+    <div>
+        <h2>All Students</h2>
+        <p>Search, filter and manage every student record.</p>
+    </div>
+
+    <a href="{{ url_for('add_student') }}" class="btn btn-primary">
+        + Add Student
+    </a>
+</section>
+
+
+<!-- SEARCH + FILTER TOOLBAR -->
+
+<section class="toolbar">
+
+    <div class="toolbar-search">
+        <input type="text" id="studentSearch" placeholder="Search by name or email..." aria-label="Search students">
+    </div>
+
+    <div class="toolbar-controls">
+
+        <select id="classFilter" aria-label="Filter by class">
+            <option value="">All Classes</option>
+            <option value="Class 1">Class 1</option>
+            <option value="Class 2">Class 2</option>
+            <option value="Class 3">Class 3</option>
+            <option value="Class 4">Class 4</option>
+            <option value="Class 5">Class 5</option>
+            <option value="Class 6">Class 6</option>
+            <option value="Class 7">Class 7</option>
+            <option value="Class 8">Class 8</option>
+            <option value="Class 9">Class 9</option>
+            <option value="Class 10">Class 10</option>
+        </select>
+
+        <select id="genderFilter" aria-label="Filter by gender">
+            <option value="">All Genders</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <select id="sortBy" aria-label="Sort students">
+            <option value="">Sort by...</option>
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="age-asc">Age (Low-High)</option>
+            <option value="age-desc">Age (High-Low)</option>
+            <option value="class-asc">Class (A-Z)</option>
+        </select>
+
+    </div>
+
+</section>
+
+
+<p class="results-count" id="resultsCount"></p>
+
+
+<!-- STUDENTS TABLE -->
+
+<section class="panel panel--table">
+
+    <table class="data-table" id="studentsTable">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Gender</th>
+                <th>Class</th>
+                <th>Age</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentsTableBody">
+
+            {% for student in students %}
+
+            <tr data-id="{{ student.id }}" data-name="{{ student.name }}" data-email="{{ student.email }}"
+                data-class="{{ student.class_name }}" data-gender="{{ student.gender }}" data-age="{{ student.age }}">
+
+                <td>{{ student.id }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.phone }}</td>
+                <td>{{ student.gender }}</td>
+                <td>{{ student.class_name }}</td>
+                <td>{{ student.age }}</td>
+
+                <td class="actions-cell">
+
+                    <a href="{{ url_for('student_details', student_id=student.id) }}" class="btn-icon btn-view">
+                        View
+                    </a>
+
+                    <a href="{{ url_for('edit_student', student_id=student.id) }}" class="btn-icon btn-edit">
+                        Edit
+                    </a>
+
+                    <button type="button" class="btn-icon btn-delete" data-delete-id="{{ student.id }}"
+                        data-delete-name="{{ student.name }}">
+                        Delete
+                    </button>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+
+    <!-- No results message -->
+
+    <p class="empty-state" id="emptyState" hidden>
+        No students match your search.
+    </p>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', initStudentsTable);
+</script>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Add Student - Student Management System{% endblock %}
+{% block page_title %}Add Student{% endblock %}
+{% block nav_add %}active{% endblock %}
+
+{% block content %}
+
+    <section class="page-intro">
+        <h2>Add a New Student</h2>
+        <p>Fill in the details below to create a student record.</p>
+    </section>
+
+    <section class="panel panel--form">
+
+        <!-- Flask: point this at your create-student route, e.g. action="{{ url_for('add_student') }}" -->
+        <form id="studentForm" method="POST" action="{{ url_for('add_student') }}" novalidate>
+
+            <!-- General success/error banner, filled in by JavaScript or Flask flash messages -->
+            <div class="form-banner" id="formBanner" hidden></div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required minlength="2" maxlength="80"
+                           placeholder="e.g. Amelia Carter">
+                    <span class="field-error" id="nameError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required
+                           placeholder="e.g. amelia.carter@example.com">
+                    <span class="field-error" id="emailError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="phone">Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required
+                           pattern="^[0-9+\-\s()]{7,15}$"
+                           placeholder="e.g. 555-0101">
+                    <span class="field-error" id="phoneError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="gender">Gender <span class="required">*</span></label>
+                    <select id="gender" name="gender" required>
+                        <option value="" disabled selected>Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span class="field-error" id="genderError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="class_name">Class <span class="required">*</span></label>
+                    <select id="class_name" name="class_name" required>
+                        <option value="" disabled selected>Select class</option>
+                        <option value="Grade 1">Grade 1</option>
+                        <option value="Grade 2">Grade 2</option>
+                        <option value="Grade 3">Grade 3</option>
+                        <option value="Grade 4">Grade 4</option>
+                        <option value="Grade 5">Grade 5</option>
+                        <option value="Grade 6">Grade 6</option>
+                        <option value="Grade 7">Grade 7</option>
+                        <option value="Grade 8">Grade 8</option>
+                    </select>
+                    <span class="field-error" id="classError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="age">Age <span class="required">*</span></label>
+                    <input type="number" id="age" name="age" required min="4" max="20"
+                           placeholder="e.g. 11">
+                    <span class="field-error" id="ageError"></span>
+                </div>
+
+                <div class="form-field form-field--wide">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="3"
+                              placeholder="Street, city, state"></textarea>
+                    <span class="field-error" id="addressError"></span>
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Student</button>
+                <a href="{{ url_for('students') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+
+        </form>
+    </section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        initFormValidation('studentForm');
+    });
+</script>
+{% endblock %}

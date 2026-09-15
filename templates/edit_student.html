@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Student - Student Management System{% endblock %}
+{% block page_title %}Edit Student{% endblock %}
+{% block nav_students %}active{% endblock %}
+
+{% block content %}
+
+    {#
+        Flask: pass the existing `student` object/dict so fields pre-fill, e.g.
+        return render_template('edit_student.html', student=student)
+    #}
+
+    <section class="page-intro">
+        <h2>Edit Student</h2>
+        <p>Update the details for {{ student.name | default('Amelia Carter') }}.</p>
+    </section>
+
+    <section class="panel panel--form">
+
+        <form id="studentForm" method="POST"
+              action="{{ url_for('edit_student', student_id=student.id | default(101)) }}" novalidate>
+
+            <div class="form-banner" id="formBanner" hidden></div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required minlength="2" maxlength="80"
+                           value="{{ student.name | default('Amelia Carter') }}">
+                    <span class="field-error" id="nameError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required
+                           value="{{ student.email | default('amelia.carter@example.com') }}">
+                    <span class="field-error" id="emailError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="phone">Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required
+                           pattern="^[0-9+\-\s()]{7,15}$"
+                           value="{{ student.phone | default('555-0101') }}">
+                    <span class="field-error" id="phoneError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="gender">Gender <span class="required">*</span></label>
+                    {% set current_gender = student.gender | default('Female') %}
+                    <select id="gender" name="gender" required>
+                        <option value="" disabled>Select gender</option>
+                        <option value="Male" {% if current_gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if current_gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if current_gender == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                    <span class="field-error" id="genderError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="class_name">Class <span class="required">*</span></label>
+                    {% set current_class = student.class_name | default('Grade 5') %}
+                    <select id="class_name" name="class_name" required>
+                        <option value="" disabled>Select class</option>
+                        {% for grade in ['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8'] %}
+                        <option value="{{ grade }}" {% if current_class == grade %}selected{% endif %}>{{ grade }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="field-error" id="classError"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="age">Age <span class="required">*</span></label>
+                    <input type="number" id="age" name="age" required min="4" max="20"
+                           value="{{ student.age | default(11) }}">
+                    <span class="field-error" id="ageError"></span>
+                </div>
+
+                <div class="form-field form-field--wide">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="3">{{ student.address | default('12 Maple Street, Springfield') }}</textarea>
+                    <span class="field-error" id="addressError"></span>
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Update Student</button>
+                <a href="{{ url_for('student_details', student_id=student.id | default(101)) }}" class="btn btn-secondary">Cancel</a>
+            </div>
+
+        </form>
+    </section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        initFormValidation('studentForm');
+    });
+</script>
+{% endblock %}

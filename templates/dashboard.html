@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Student Management System{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+
+    <section class="page-intro">
+        <h2>Welcome back</h2>
+        <p>Here's a snapshot of your student records.</p>
+    </section>
+
+    <!-- ============ STATISTIC CARDS ============ -->
+    <section class="stat-grid">
+
+        <div class="stat-card stat-card--accent">
+            <span class="stat-label">Total Students</span>
+            <span class="stat-value">{{ total_students }}</span>
+            <span class="stat-note">Across all classes</span>
+        </div>
+
+        <div class="stat-card stat-card--success">
+            <span class="stat-label">Active This Term</span>
+            <span class="stat-value">{{ active_students }}</span>
+            <span class="stat-note">Currently enrolled</span>
+        </div>
+
+        <div class="stat-card stat-card--warning">
+            <span class="stat-label">New This Month</span>
+            <span class="stat-value">{{ new_students }}</span>
+            <span class="stat-note">Recently added</span>
+        </div>
+
+        <div class="stat-card stat-card--ink">
+            <span class="stat-label">Total Classes</span>
+            <span class="stat-value">{{ total_classes }}</span>
+            <span class="stat-note">Grade 1 through 8</span>
+        </div>
+
+    </section>
+
+    <!-- ============ STUDENTS BY CLASS ============ -->
+    <section class="panel">
+        <div class="panel-header">
+            <h3>Students by Class</h3>
+        </div>
+
+        <div class="class-breakdown">
+            {% for row in students_by_class %}
+            <div class="class-row">
+                <span class="class-name">{{ row.name }}</span>
+                <div class="class-bar-track">
+                    <div class="class-bar-fill" style="width: {{ row.percent }}%;"></div>
+                </div>
+                <span class="class-count">{{ row.count }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- ============ QUICK ACTIONS ============ -->
+    <section class="panel">
+        <div class="panel-header">
+            <h3>Quick Actions</h3>
+        </div>
+        <div class="quick-actions">
+            <a href="{{ url_for('add_student') }}" class="btn btn-primary">Add a new student</a>
+            <a href="{{ url_for('students') }}" class="btn btn-secondary">View all students</a>
+        </div>
+    </section>
+
+{% endblock %}

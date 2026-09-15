@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="app-shell">
+
+        <!-- ============ SIDEBAR NAVIGATION ============ -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-mark">SM</span>
+                <span class="brand-name">Student Manager</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('dashboard') }}"
+                   class="nav-link {% block nav_dashboard %}{% endblock %}">
+                    <span class="nav-icon">&#9635;</span>
+                    Dashboard
+                </a>
+                <a href="{{ url_for('students') }}"
+                   class="nav-link {% block nav_students %}{% endblock %}">
+                    <span class="nav-icon">&#9776;</span>
+                    All Students
+                </a>
+                <a href="{{ url_for('add_student') }}"
+                   class="nav-link {% block nav_add %}{% endblock %}">
+                    <span class="nav-icon">&#43;</span>
+                    Add Student
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>Student Management System</p>
+            </div>
+        </aside>
+
+        <!-- ============ MAIN CONTENT AREA ============ -->
+        <div class="main-area">
+
+            <!-- Top bar: shows on every page, mobile menu toggle lives here -->
+            <header class="topbar">
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                    &#9776;
+                </button>
+                <h1 class="topbar-title">{% block page_title %}Dashboard{% endblock %}</h1>
+            </header>
+
+            <!-- Flash message area: Flask's get_flashed_messages() can render here later -->
+            <div class="flash-container">
+                {% block flash_messages %}
+                {#
+                    Example for later Flask integration:
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% for category, message in messages %}
+                            <div class="message message-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endwith %}
+                #}
+                {% endblock %}
+            </div>
+
+            <main class="page-content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
